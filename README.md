@@ -28,6 +28,14 @@ python3 scripts/onboard.py --import /path/to/your/repo
 
 Claude analyzes the repo and pre-fills context files. The wizard handles anything it can't auto-detect.
 
+You can also import directly from GitHub:
+
+```bash
+python3 scripts/onboard.py --import-github owner/repo
+```
+
+`--import-github` accepts `owner/repo` or a full GitHub repo URL.
+
 ## Tools Installed by `setup.sh`
 
 | Tool | What it does |
