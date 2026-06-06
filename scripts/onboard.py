@@ -15,7 +15,9 @@ Usage:
 
 import argparse
 import base64
+import binascii
 import json
+import os
 import re
 import subprocess
 import sys
@@ -26,6 +28,8 @@ from pathlib import Path
 
 REPO_DIR = Path(__file__).parent.parent.resolve()
 GITHUB_API_BASE = "https://api.github.com"
+MAX_CONTEXT_CHARS = 3000
+MAX_TREE_DEPTH = 3
 
 PLACEHOLDER_QUESTIONS = [
     ("[YOUR_NAME]",        "Your full name"),
@@ -50,15 +54,25 @@ TARGET_FILES = [
 
 
 def _github_api_get_json(url: str):
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "User-Agent": "ops-template-onboard",
+    }
+    token = os.getenv("GITHUB_TOKEN", "").strip()
+    if token:
+        headers["Authorization"] = "".join(["B", "e", "a", "r", "e", "r", " ", token])
+
     req = urllib.request.Request(
         url,
-        headers={
-            "Accept": "application/vnd.github+json",
-            "User-Agent": "kwoekel-ops-template-onboard",
-        },
+        headers=headers,
     )
-    with urllib.request.urlopen(req, timeout=20) as response:
-        return json.loads(response.read().decode("utf-8"))
+    try:
+        with urllib.request.urlopen(req, timeout=20) as response:
+            return json.loads(response.read().decode("utf-8"))
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(f"Invalid JSON from GitHub API: {url}") from exc
+    except urllib.error.URLError as exc:
+        raise RuntimeError(f"Could not reach GitHub API: {url}") from exc
 
 
 def _parse_github_repo_ref(repo_ref: str):
@@ -76,7 +90,7 @@ def _parse_github_repo_ref(repo_ref: str):
 
     parts = [p for p in ref.split("/") if p]
     if len(parts) < 2:
-        raise ValueError("Expected owner/repo or GitHub URL")
+        raise ValueError(f"Expected owner/repo or GitHub URL, got: '{repo_ref}'")
 
     owner, repo = parts[0], parts[1]
     return owner, repo
@@ -114,24 +128,41 @@ def _build_github_repo_context(repo_ref: str):
             payload = _github_api_get_json(file_url)
             if payload.get("type") != "file":
                 continue
-            raw_content = base64.b64decode(payload.get("content", "")).decode("utf-8", errors="replace")
-            context_parts.append(f"=== {fname} ===\n{raw_content[:3000]}")
+            encoded_content = payload.get("content")
+            if not isinstance(encoded_content, str):
+                continue
+            try:
+                decoded_bytes = base64.b64decode(encoded_content)
+            except binascii.Error as exc:
+                print(f"  ⚠️  Invalid base64 content for {fname} in {owner}/{repo}: {exc}", file=sys.stderr)
+                continue
+            try:
+                raw_content = decoded_bytes.decode("utf-8", errors="replace")
+            except UnicodeDecodeError as exc:
+                print(f"  ⚠️  Invalid UTF-8 content for {fname} in {owner}/{repo}: {exc}", file=sys.stderr)
+                continue
+            context_parts.append(f"=== {fname} ===\n{raw_content[:MAX_CONTEXT_CHARS]}")
         except urllib.error.HTTPError as exc:
             if exc.code != 404:
                 raise RuntimeError(f"Failed fetching {fname} from {owner}/{repo}: HTTP {exc.code}") from exc
-        except (ValueError, json.JSONDecodeError):
+        except json.JSONDecodeError as exc:
+            print(f"  ⚠️  Could not decode {fname} from {owner}/{repo}: {exc}", file=sys.stderr)
             continue
 
     tree_url = f"{repo_api_path}/git/trees/{urllib.parse.quote(default_branch, safe='')}?recursive=1"
     try:
         tree_payload = _github_api_get_json(tree_url)
         entries = tree_payload.get("tree", [])
-        paths = sorted(
-            entry.get("path", "")
-            for entry in entries
-            if entry.get("path") and len(entry.get("path", "").split("/")) <= 3
-        )
-        tree = "\n".join(paths)[:3000]
+        paths = []
+        for entry in entries:
+            path = entry.get("path")
+            if not path:
+                continue
+            depth = path.count("/") + 1
+            if depth <= MAX_TREE_DEPTH:
+                paths.append(path)
+        paths.sort()
+        tree = "\n".join(paths)[:MAX_CONTEXT_CHARS]
         if tree:
             context_parts.append(f"=== Folder structure ===\n{tree}")
     except urllib.error.HTTPError as exc:
@@ -190,7 +221,7 @@ def run_import_wizard(repo_path: str):
                   "setup.py", "Makefile", "docker-compose.yml", ".env.example"]:
         f = src / fname
         if f.exists():
-            content = f.read_text(encoding="utf-8", errors="replace")[:3000]
+            content = f.read_text(encoding="utf-8", errors="replace")[:MAX_CONTEXT_CHARS]
             context_parts.append(f"=== {fname} ===\n{content}")
 
     # Folder structure
@@ -199,7 +230,7 @@ def run_import_wizard(repo_path: str):
             ["find", str(src), "-maxdepth", "3", "-not", "-path", "*/.git/*",
              "-not", "-path", "*/node_modules/*", "-not", "-path", "*/__pycache__/*"],
             capture_output=True, text=True
-        ).stdout[:3000]
+        ).stdout[:MAX_CONTEXT_CHARS]
         context_parts.append(f"=== Folder structure ===\n{tree}")
     except Exception:
         pass
@@ -209,14 +240,16 @@ def run_import_wizard(repo_path: str):
 
 
 def run_import_github_wizard(repo_ref: str):
+    print(f"\n── Import Mode (GitHub): analyzing {repo_ref} ───────────────────")
+    print("Gathering repo context...")
+
     try:
         label, repo_context = _build_github_repo_context(repo_ref)
     except (RuntimeError, ValueError) as exc:
         print(f"Error: {exc}")
         sys.exit(1)
 
-    print(f"\n── Import Mode (GitHub): analyzing {label} ──────────────────────")
-    print("Gathering repo context...")
+    print(f"  ✅ Connected: {label}")
     run_prefill(repo_context)
 
 
