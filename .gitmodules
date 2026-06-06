@@ -1,0 +1,3 @@
+[submodule "token-dashboard"]
+	path = token-dashboard
+	url = https://github.com/nateherkai/token-dashboard.git
