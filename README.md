@@ -1,13 +1,37 @@
 # [YOUR_NAME]-Ops — Claude Code Template
 
-> **Placeholders:** Everything in `[BRACKETS]` is a placeholder you fill in.
-> `[YOUR_NAME]` → your actual name (e.g. `Alex`).
-> `-Ops` is a fixed suffix — keep it as-is. It identifies the repo type, not a person.
-> All other `[BRACKETS]` in `CLAUDE.md` are also placeholders.
+A personal setup that gives Claude Code a memory, a voice, and a system — one centralized knowledge base that all your ops, agents, and workflows run through.
 
-A self-installing personal ops repo for Claude Code. Clone → run setup → fill in your details.
+---
 
-## Quick Start
+## Before You Start
+
+Make sure you have these installed:
+
+- **Git** — [download here](https://git-scm.com/downloads)
+- **Python 3** — [download here](https://www.python.org/downloads/) (most Macs already have it)
+- **Claude Code** — [install here](https://claude.ai/code) (the desktop app or CLI)
+
+Not sure if you have them? Open your Terminal (on Mac: press `Cmd + Space`, type `Terminal`, hit Enter) and run:
+
+```bash
+git --version
+python3 --version
+```
+
+If both print a version number, you're good.
+
+---
+
+## Setup (takes about 5 minutes)
+
+**Step 1 — Open your Terminal**
+
+On Mac: `Cmd + Space` → type `Terminal` → press Enter
+
+**Step 2 — Copy and run these commands one at a time**
+
+Replace `[YOUR-NAME]` with your actual name (no spaces, e.g. `alex-ops`):
 
 ```bash
 git clone [this-repo-url] [YOUR-NAME]-ops
@@ -16,45 +40,63 @@ bash setup.sh
 python3 scripts/onboard.py --fresh
 ```
 
-## What You Get
+Each command does one thing:
+- `git clone` — downloads the template to your computer
+- `cd` — moves into the folder you just created
+- `bash setup.sh` — installs the tools this system uses
+- `python3 scripts/onboard.py --fresh` — runs a wizard that sets up your personal details
 
-- Session boot + task routing framework (`CLAUDE.md`)
-- Context-saving tools: context-mode, claude-mem, graphify
-- Skills: GSD project framework, superpowers craft skills, ops tools
-- Weekly ops audit (runs Fridays via launchd on Mac)
-- Token usage dashboard
-- Two-mode onboarding wizard (fresh start or import existing repo)
+The wizard will ask you questions. Just answer them — no coding required.
 
-## Import an Existing Repo
+---
+
+## After Setup — Fill In Your Details
+
+Open the files below and replace the `[PLACEHOLDER]` text with your real information. Each file has instructions inside it.
+
+| File | What to fill in |
+|---|---|
+| `CLAUDE.md` | Your name, focus areas, timezone, and email |
+| `context/me.md` | How you like to communicate, your working style |
+| `connections.md` | Any tools you use (Notion, Slack, etc.) |
+| `endpoints.md` | Any API IDs or webhook URLs you reference often |
+
+To open a file: in your Terminal, type `open CLAUDE.md` and it will open in a text editor.
+
+---
+
+## Already Have a Repo You Want to Import?
+
+If you have an existing project folder you want Claude to learn from:
 
 ```bash
 python3 scripts/onboard.py --import /path/to/your/repo
 ```
 
-Claude analyzes the repo and pre-fills context files. The wizard handles anything it can't auto-detect.
-
-You can also import directly from GitHub:
+Or import directly from GitHub:
 
 ```bash
 python3 scripts/onboard.py --import-github owner/repo
 ```
 
-`--import-github` accepts `owner/repo` or a full GitHub repo URL.
+Replace `owner/repo` with the GitHub username and repo name (e.g. `ACME/my-project`).
 
-## Tools Installed by `setup.sh`
+Claude will read the repo and pre-fill your context files automatically.
 
-| Tool | What it does |
+---
+
+## What This Sets Up
+
+| Tool | What it does in plain terms |
 |---|---|
-| context-mode | Sandboxes large outputs so they don't blow up context |
-| claude-mem | Persistent cross-session memory |
-| graphify | Knowledge graph of your codebase — query instead of reading raw files |
-| token-dashboard | Visual token usage analytics |
-| Claude Code plugins | Skills, code review, GSD, superpowers, and more |
+| **context-mode** | Stops Claude from filling up its memory with huge chunks of irrelevant output |
+| **claude-mem** | Gives Claude a memory that carries over between sessions |
+| **graphify** | Lets Claude understand your codebase by querying it, instead of reading every file |
+| **token-dashboard** | Shows you how much of Claude's memory budget you're using |
+| **Skills & plugins** | Pre-built workflows Claude can use (project planning, code review, ops tools) |
 
-## After Setup
+---
 
-1. In `CLAUDE.md`, replace `[YOUR_NAME]` with your name and fill in all other `[PLACEHOLDER]` blocks
-2. Fill in `context/me.md` with your voice and working preferences
-3. Add tool connections to `connections.md`
-4. Add endpoint IDs to `endpoints.md`
-5. Run `python3 skills/sync.py --write` after adding custom skills
+## Need Help?
+
+If something breaks during setup, look at the error message and ask Claude Code what it means — paste the error and say "what does this mean and how do I fix it?"
