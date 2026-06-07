@@ -31,11 +31,12 @@ On Mac: `Cmd + Space` → type `Terminal` → press Enter
 
 **Step 2 — Copy and run these commands one at a time**
 
-Replace `[YOUR-NAME]` with your actual name (no spaces, e.g. `alex-ops`):
+- `[TEMPLATE_GITHUB_URL]` — the URL from this repo's GitHub page (green "Code" button → copy the HTTPS link)
+- `[YOUR_FOLDER_NAME]` — what you want to name your local folder, no spaces (e.g. `alex-ops`)
 
 ```bash
-git clone [this-repo-url] [YOUR-NAME]-ops
-cd [YOUR-NAME]-ops
+git clone [TEMPLATE_GITHUB_URL] [YOUR_FOLDER_NAME]
+cd [YOUR_FOLDER_NAME]
 bash setup.sh
 python3 scripts/onboard.py --fresh
 ```
@@ -52,7 +53,7 @@ The wizard will ask you questions. Just answer them — no coding required.
 
 ## After Setup — Fill In Your Details
 
-Open the files below and replace the `[PLACEHOLDER]` text with your real information. Each file has instructions inside it.
+Open the files below and replace the placeholder text with your real information. Each file has instructions inside it.
 
 | File | What to fill in |
 |---|---|
@@ -76,12 +77,32 @@ python3 scripts/onboard.py --import /path/to/your/repo
 Or import directly from GitHub:
 
 ```bash
-python3 scripts/onboard.py --import-github owner/repo
+python3 scripts/onboard.py --import-github [GITHUB_USERNAME]/[REPO_NAME]
 ```
 
-Replace `owner/repo` with the GitHub username and repo name (e.g. `ACME/my-project`).
+- `[GITHUB_USERNAME]` — the GitHub account that owns the repo (e.g. `acme-corp`)
+- `[REPO_NAME]` — the name of the repo (e.g. `my-project`)
 
 Claude will read the repo and pre-fill your context files automatically.
+
+---
+
+## Staying Up to Date
+
+If this template gets updated and you want to pull in the changes, run this once after setup to connect your copy to the original:
+
+```bash
+git remote add upstream [TEMPLATE_GITHUB_URL]
+```
+
+Then whenever you want to check for updates:
+
+```bash
+git fetch upstream
+git merge upstream/master
+```
+
+If you've edited the same files that changed in the template, Git will flag a conflict and ask you to choose which version to keep. Files you haven't touched will update automatically.
 
 ---
 
