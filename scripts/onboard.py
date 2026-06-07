@@ -49,8 +49,16 @@ TARGET_FILES = [
     "memory/MEMORY.md", "memory/overview.md", "memory/glossary.md",
     "connections.md", "endpoints.md", "decisions/log.md",
     "agents/ceo/AGENT.md", "agents/cto/AGENT.md",
-    ".gitmodules",
 ]
+
+
+def strip_code_fences(text: str) -> str:
+    lines = text.splitlines()
+    if lines and lines[0].lstrip().startswith("```"):
+        lines = lines[1:]
+    if lines and lines[-1].lstrip().startswith("```"):
+        lines = lines[:-1]
+    return "\n".join(lines)
 
 
 def _github_api_get_json(url: str):
@@ -291,7 +299,7 @@ in the same order as the input. No explanation needed.
                 pattern = rf"---\s*{re.escape(rel)}\s*---\n(.*?)(?=---\s*\w|$)"
                 match = re.search(pattern, output, re.DOTALL)
                 if match:
-                    content = match.group(1).strip()
+                    content = strip_code_fences(match.group(1).strip()).strip()
                     (REPO_DIR / rel).write_text(content + "\n", encoding="utf-8")
                     print(f"  ✅ Pre-filled: {rel}")
         else:

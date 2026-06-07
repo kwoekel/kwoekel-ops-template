@@ -54,8 +54,10 @@ Ask the user for the values below. Many can be inferred from context — only as
 ### 4. Run the script
 Call the Python script with all collected values:
 
+Run from the repo root (the script resolves paths relative to itself):
+
 ```bash
-python3 /Users/[YOUR_USERNAME]/kwoekel/_templates/new-from-template.py \
+python3 _templates/new-from-template.py \
   <framework|roadmap> \
   <output_path> \
   "PROJECT_NAME=<value>" \

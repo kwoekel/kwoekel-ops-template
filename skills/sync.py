@@ -33,7 +33,9 @@ def build_table(skills: list[dict]) -> str:
     for s in sorted(skills, key=lambda x: x.get("name", "")):
         name = s.get("name", "")
         category = s.get("category", "—")
-        description = s.get("description", s.get("when_to_use", ""))[:80]
+        description = s.get("description", s.get("when_to_use", ""))
+        if len(description) > 80:
+            description = description[:79].rsplit(" ", 1)[0] + "…"
         rows.append(f"| `{name}` | {category} | {description} |")
     return "\n".join(rows)
 

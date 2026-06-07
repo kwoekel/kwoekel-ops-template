@@ -15,9 +15,8 @@
     "contextPattern": 2
   },
   "directoryMappings": {
-    "kwoekel": "daily-job-scout",
-    "kwoekel/projects": "application-tailor",
-    "kwoekel/scheduled-tasks": "execution-planner",
+    "projects": "application-tailor",
+    "scheduled-tasks": "execution-planner",
     ".claude/skills": "execution-planner",
     ".claude/hooks": "execution-planner"
   },
@@ -126,7 +125,7 @@
           "(?:run|trigger).{0,10}(?:job scout|daily scout|job search)"
         ],
         "pathPatterns": [
-          "kwoekel/scheduled-tasks/daily-job-scout/**"
+          "scheduled-tasks/daily-job-scout/**"
         ]
       },
       "relatedSkills": ["application-tailor", "weekly-pipeline-review"]

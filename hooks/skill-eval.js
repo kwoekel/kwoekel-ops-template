@@ -58,7 +58,7 @@ function extractFilePaths(prompt) {
 
   // Match paths starting with common directories
   const dirPattern =
-    /(?:^|\s|["'`])((?:src|app|components|screens|hooks|utils|services|navigation|graphql|localization|\.claude|\.github|\.maestro|kwoekel|Tampico|RNR|RockNRoll)\/[\w\-./]+)/gi;
+    /(?:^|\s|["'`])((?:src|app|components|screens|hooks|utils|services|navigation|graphql|localization|\.claude|\.github|\.maestro|projects|scheduled-tasks)\/[\w\-./]+)/gi;
   while ((match = dirPattern.exec(prompt)) !== null) {
     paths.add(match[1]);
   }

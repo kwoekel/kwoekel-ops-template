@@ -4,7 +4,6 @@
 set -e
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-NODE="$(which node 2>/dev/null || echo "node")"
 
 echo ""
 echo "╔══════════════════════════════════════════╗"
@@ -50,7 +49,8 @@ done
 # ── 3. Copy hook scripts to ~/.claude/hooks/ ──────────────────────────────────
 echo "→ Installing Claude Code hooks..."
 mkdir -p "$HOME/.claude/hooks"
-cp -n "$REPO_DIR/hooks/"* "$HOME/.claude/hooks/" 2>/dev/null || true
+# Overwrite so re-running setup picks up updated hook scripts
+cp -f "$REPO_DIR/hooks/"* "$HOME/.claude/hooks/" 2>/dev/null || true
 # Restore real $HOME path in any hooks that use the __HOME_DIR__ placeholder
 find "$HOME/.claude/hooks" -type f -exec   sed -i "" "s|__HOME_DIR__|$HOME|g" {} \; 2>/dev/null ||   find "$HOME/.claude/hooks" -type f -exec     sed -i "s|__HOME_DIR__|$HOME|g" {} \; 2>/dev/null || true
 echo "  ✅ Hooks copied to ~/.claude/hooks/"
@@ -65,7 +65,8 @@ python3 "$REPO_DIR/skills/sync.py" --write 2>/dev/null || true
 
 # ── 6. Initialize git submodules (token-dashboard) ───────────────────────────
 echo "→ Initializing git submodules..."
-git -C "$REPO_DIR" submodule update --init --recursive
+git -C "$REPO_DIR" submodule update --init --recursive \
+  || echo "  ⚠️  Submodule init skipped (optional — token-dashboard unreachable)"
 
 # ── 7. Weekly ops audit launchd agent (Mac only) ─────────────────────────────
 if [[ "$OSTYPE" == "darwin"* ]]; then
