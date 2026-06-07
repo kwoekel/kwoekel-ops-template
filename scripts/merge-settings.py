@@ -77,7 +77,7 @@ def merge_hooks(settings: dict, node: str) -> dict:
     add_hook("Stop", ".*", f'bash \"{HOOKS_DIR}/cleanup-worktrees.sh\"')
 
     # SessionStart
-    add_hook("SessionStart", "*", "echo '{"continue": true, "suppressOutput": true}'")
+    add_hook("SessionStart", "*", "echo '{\"continue\": true, \"suppressOutput\": true}'")
     add_hook("SessionStart", "*", hook_cmd("gsd-check-update.js", True, node))
     add_hook("SessionStart", "*", f'bash \"{HOOKS_DIR}/gsd-session-state.sh\"')
     add_hook("SessionStart", "*", hook_cmd("context-mode-cache-heal.mjs", True, node))
