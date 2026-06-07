@@ -1,12 +1,17 @@
-# [YOUR_NAME] Ops — Claude Code Template
+# [YOUR_NAME]-Ops — Claude Code Template
+
+> **Placeholders:** Everything in `[BRACKETS]` is a placeholder you fill in.
+> `[YOUR_NAME]` → your actual name (e.g. `Alex`).
+> `-Ops` is a fixed suffix — keep it as-is. It identifies the repo type, not a person.
+> All other `[BRACKETS]` in `CLAUDE.md` are also placeholders.
 
 A self-installing personal ops repo for Claude Code. Clone → run setup → fill in your details.
 
 ## Quick Start
 
 ```bash
-git clone [this-repo-url] my-ops
-cd my-ops
+git clone [this-repo-url] [YOUR-NAME]-ops
+cd [YOUR-NAME]-ops
 bash setup.sh
 python3 scripts/onboard.py --fresh
 ```
@@ -48,7 +53,7 @@ python3 scripts/onboard.py --import-github owner/repo
 
 ## After Setup
 
-1. Replace all `[PLACEHOLDER]` blocks in `CLAUDE.md`
+1. In `CLAUDE.md`, replace `[YOUR_NAME]` with your name and fill in all other `[PLACEHOLDER]` blocks
 2. Fill in `context/me.md` with your voice and working preferences
 3. Add tool connections to `connections.md`
 4. Add endpoint IDs to `endpoints.md`
