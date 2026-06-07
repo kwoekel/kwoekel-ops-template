@@ -31,11 +31,10 @@ On Mac: `Cmd + Space` → type `Terminal` → press Enter
 
 **Step 2 — Copy and run these commands one at a time**
 
-- `[TEMPLATE_GITHUB_URL]` — the URL from this repo's GitHub page (green "Code" button → copy the HTTPS link)
 - `[YOUR_FOLDER_NAME]` — what you want to name your local folder, no spaces (e.g. `alex-ops`)
 
 ```bash
-git clone [TEMPLATE_GITHUB_URL] [YOUR_FOLDER_NAME]
+git clone https://github.com/kwoekel/kwoekel-ops-template [YOUR_FOLDER_NAME]
 cd [YOUR_FOLDER_NAME]
 bash setup.sh
 python3 scripts/onboard.py --fresh
@@ -92,7 +91,7 @@ Claude will read the repo and pre-fill your context files automatically.
 If this template gets updated and you want to pull in the changes, run this once after setup to connect your copy to the original:
 
 ```bash
-git remote add upstream [TEMPLATE_GITHUB_URL]
+git remote add upstream https://github.com/kwoekel/kwoekel-ops-template
 ```
 
 Then whenever you want to check for updates:
