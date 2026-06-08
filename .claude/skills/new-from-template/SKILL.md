@@ -73,6 +73,6 @@ Tell the user:
 - Any unfilled placeholders that need manual attention (the script prints these)
 
 ## Notes
-- If the user is working on ICON Consulting, the existing files are already instances — don't overwrite them
+- If a target file already exists, treat it as an existing instance — confirm with the user before overwriting it
 - Parent directories are created automatically by the script
 - Unfilled placeholders stay as `[KEY]` in the output so nothing is silently wrong

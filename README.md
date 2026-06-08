@@ -47,6 +47,26 @@ You can always edit any of these files later if you need to change something.
 
 ---
 
+## Optional: Enhanced Local Setup
+
+If you're using the **Claude Code desktop app** or **VS Code extension** (not the
+web version), you can install extra local tooling. In the chat, type:
+
+```
+/setup
+```
+
+It checks what you already have and installs only what's available — graphify
+(codebase knowledge graph), curated plugins, automation hooks, and a weekly ops
+audit (Mac only). Anything it can't install is skipped with a note; nothing breaks.
+
+**Web (claude.ai) users can skip this** — all core features work without it.
+
+> First time you open the cloned folder, Claude Code asks you to **trust the
+> workspace**. Accept it so the `/onboard` and `/setup` commands are available.
+
+---
+
 ## Staying Up to Date
 
 If this template gets updated and you want to pull in the changes, run this once after setup to connect your copy to the original:

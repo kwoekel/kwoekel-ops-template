@@ -3,7 +3,8 @@
 # Run once after cloning. Safe to re-run.
 set -e
 
-REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# This script lives in scripts/, so the repo root is one level up.
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 echo ""
 echo "╔══════════════════════════════════════════╗"
@@ -59,8 +60,11 @@ echo "  ✅ Hooks copied to ~/.claude/hooks/"
 echo "→ Updating global Claude settings..."
 python3 "$REPO_DIR/scripts/merge-settings.py"
 
-# ── 5. Register skills ────────────────────────────────────────────────────────
-echo "→ Registering skills..."
+# ── 5. Refresh skills doc index ───────────────────────────────────────────────
+# The /onboard, /setup, and new-from-template skills live in .claude/skills/ and
+# are auto-discovered by Claude Code on open — no registration needed. This just
+# refreshes the human-readable skills/README.md table.
+echo "→ Refreshing skills index..."
 python3 "$REPO_DIR/skills/sync.py" --write 2>/dev/null || true
 
 # ── 6. Initialize git submodules (token-dashboard) ───────────────────────────
@@ -78,8 +82,8 @@ echo ""
 echo "╔══════════════════════════════════════════╗"
 echo "║  Setup complete!                        ║"
 echo "╠══════════════════════════════════════════╣"
-echo "║  Next step:                             ║"
-echo "║  python3 scripts/onboard.py --fresh     ║"
-echo "║  or --import /path or --import-github   ║"
+echo "║  Next step — back in Claude Code, run:  ║"
+echo "║      /onboard                           ║"
+echo "║  to personalize your repo.              ║"
 echo "╚══════════════════════════════════════════╝"
 echo ""
