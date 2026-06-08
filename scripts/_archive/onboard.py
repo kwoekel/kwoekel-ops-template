@@ -79,6 +79,8 @@ def _github_api_get_json(url: str):
             return json.loads(response.read().decode("utf-8"))
     except json.JSONDecodeError as exc:
         raise RuntimeError(f"Invalid JSON from GitHub API: {url}") from exc
+    except urllib.error.HTTPError:
+        raise
     except urllib.error.URLError as exc:
         raise RuntimeError(f"Could not reach GitHub API: {url}") from exc
 
@@ -197,12 +199,40 @@ def fill_placeholders(replacements: dict):
             print(f"  ✅ Updated {rel}")
 
 
-def run_fresh_wizard():
-    print("\n── Fresh Start Onboarding ─────────────────────────────────────")
-    print("Fill in your details. Press Enter to skip optional fields.\n")
+def remaining_placeholders():
+    """Return the set of placeholder tokens still present in any target file."""
+    found = set()
+    for rel in TARGET_FILES:
+        path = REPO_DIR / rel
+        if not path.exists():
+            continue
+        text = path.read_text(encoding="utf-8")
+        for placeholder, _ in PLACEHOLDER_QUESTIONS:
+            if placeholder in text:
+                found.add(placeholder)
+    return found
+
+
+def run_fresh_wizard(only=None):
+    """Interactive wizard. If `only` is a set of placeholders, skip the rest."""
+    questions = [
+        (ph, prompt) for ph, prompt in PLACEHOLDER_QUESTIONS
+        if only is None or ph in only
+    ]
+
+    if only is not None and not questions:
+        print("\n✅ All placeholders were filled automatically — nothing left to do.")
+        return
+
+    if only is None:
+        print("\n── Fresh Start Onboarding ─────────────────────────────────────")
+        print("Fill in your details. Press Enter to skip optional fields.\n")
+    else:
+        print("\n── Finishing Onboarding ────────────────────────────────────────")
+        print("Fill in the remaining details. Press Enter to skip optional fields.\n")
 
     replacements = {}
-    for placeholder, prompt in PLACEHOLDER_QUESTIONS:
+    for placeholder, prompt in questions:
         value = input(f"{prompt}: ").strip()
         if value:
             replacements[placeholder] = value
@@ -308,7 +338,7 @@ in the same order as the input. No explanation needed.
         print("  ⚠️  Could not run Claude CLI — proceeding to manual wizard")
 
     print("\nFinishing with interactive wizard for remaining placeholders...")
-    run_fresh_wizard()
+    run_fresh_wizard(only=remaining_placeholders())
 
 
 def main():
