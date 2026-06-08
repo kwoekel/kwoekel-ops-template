@@ -49,17 +49,27 @@ confident and asking the user only for the rest. Files that contain placeholders
 - `CLAUDE.md` — name, email, focus areas, timezone, tooling
 - `context/me.md` — communication style and working preferences
 - `context/goals.md` — career / business targets
+- `context/work.md` — employment status / availability
 - `connections.md` — tools in use (Notion, Slack, etc.)
-- `memory/MEMORY.md`, `decisions/log.md`, and any `agents/*/AGENT.md`
+- `endpoints.md` — GitHub username/repo, last-verified date
+- `MAP.md` — name, focus areas, last-updated date (loaded every session via routing)
+- `memory/MEMORY.md`, `memory/overview.md`, `memory/glossary.md`
+- `decisions/log.md`, and any `agents/*/AGENT.md`
+- `scheduled-tasks/example-task/README.md` — launchd label username
+
+Do not fill placeholders inside instructional/example files — leave
+`EXPANSIONS.md`, `GUARDRAILS.md`, `REVIEW.md`, and the `.claude/skills/` files
+as-is. Their brackets are documentation, not the owner's data.
 
 The placeholder values you will need:
 
-- Full name
-- Email address
-- GitHub username
-- Timezone (PST, EST, CET, UTC, …)
-- 2–3 focus areas (e.g. "Job search, AI consulting")
+- Full name → `[YOUR_NAME]`
+- Email address → `[YOUR_EMAIL]`
+- GitHub username → `[YOUR_USERNAME]` (and repo name → `[YOUR_REPO]`)
+- Timezone → `[TIMEZONE]` (PST, EST, CET, UTC, …)
+- 2–3 focus areas → `[YOUR_FOCUS_AREAS]` (e.g. "Job search, AI consulting")
 - The three main focus areas, labeled individually (skip if same as above)
+- Today's date → `[DATE]` (use the current date for any "last updated" fields)
 - (Optional) Main services / portfolio page name
 
 If you cannot confidently infer a value, ask for it. Never invent personal details.
@@ -69,7 +79,25 @@ If you cannot confidently infer a value, ask for it. Never invent personal detai
 Before committing, show the user what was filled in (especially inferred values)
 so they can correct anything. Then write all files with the Write tool.
 
-### Step 5 — Commit
+### Step 5 — Sweep for leftovers (required)
+
+After writing, run a final sweep so nothing personal is left blank. From the repo
+root:
+
+```bash
+grep -rnE '\[YOUR_[A-Z_]*\]|\[TIMEZONE\]|\[DATE\]' . \
+  --include='*.md' \
+  | grep -vE '\.git/|_archive/|_templates/|EXPANSIONS\.md|GUARDRAILS\.md|REVIEW\.md|\.claude/skills/'
+```
+
+- If it returns **nothing** → every owner placeholder is filled. Continue to commit.
+- If it returns lines → those files still have gaps. Fill them (ask the user for any
+  value you can't infer), then re-run the sweep until it comes back clean.
+
+This catches files that were missed and is the safety net that makes onboarding
+trustworthy — never commit with owner placeholders still present.
+
+### Step 6 — Commit
 
 ```
 Initial setup: personalized ops repo
