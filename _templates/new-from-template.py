@@ -22,9 +22,12 @@ from pathlib import Path
 
 REPO_DIR = Path(__file__).parent.parent.resolve()
 
+# Opt-in domain blueprints. The DEFAULT project shape is the generic skeleton in
+# _templates/project-skeleton/ — scaffold it with `python3 scripts/ingest.py scaffold <name>`.
+# These single-file templates are only for projects that genuinely match the domain.
 TEMPLATES = {
-    "framework": REPO_DIR / "_templates" / "frameworks" / "lead-gen-framework-template.md",
-    "roadmap":   REPO_DIR / "_templates" / "planning" / "four-phase-roadmap-template.md",
+    "framework": REPO_DIR / "_templates" / "_examples" / "lead-gen-framework-template.md",
+    "roadmap":   REPO_DIR / "_templates" / "_examples" / "four-phase-roadmap-template.md",
 }
 
 
