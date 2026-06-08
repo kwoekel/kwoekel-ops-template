@@ -4,85 +4,46 @@ A personal setup that gives Claude Code a memory, a voice, and a system — one 
 
 ---
 
-## Before You Start
+## Quick Start (no terminal required)
 
-Make sure you have these installed:
+**1. Clone the template**
 
-- **Git** — [download here](https://git-scm.com/downloads)
-- **Python 3** — [download here](https://www.python.org/downloads/) (most Macs already have it)
-- **Claude Code** — [install here](https://claude.ai/code) (the desktop app or CLI)
+Use GitHub's Code button on [this repo](https://github.com/kwoekel/kwoekel-ops-template) to clone it to your computer, or use your git client of choice. No command line needed.
 
-Not sure if you have them? Open your Terminal (on Mac: press `Cmd + Space`, type `Terminal`, hit Enter) and run:
+**2. Open in Claude Code**
 
-```bash
-git --version
-python3 --version
+Open the cloned folder in:
+- **Claude Code desktop app**, or
+- **claude.ai/code** in your web browser
+
+**3. Run the setup wizard**
+
+In the Claude Code chat, type:
+
+```
+/onboard
 ```
 
-If both print a version number, you're good.
+The wizard will ask you questions conversationally. You can:
+- **Start fresh** — answer all questions (5 min)
+- **Import an existing repo** — Claude analyzes your project and pre-fills what it can
+- **Import from GitHub** — same as above but from a GitHub repo URL
+
+All your files will be generated and committed automatically. No terminal commands needed.
 
 ---
 
-## Setup (takes about 5 minutes)
+## After Setup
 
-**Step 1 — Open your Terminal**
+Your personal ops repo is now ready. You'll have:
 
-On Mac: `Cmd + Space` → type `Terminal` → press Enter
+- **CLAUDE.md** — your profile, focus areas, email, timezone
+- **context/me.md** — how you like to communicate and work
+- **connections.md** — links to tools you use (Notion, Slack, etc.)
+- **Memory system** — Claude now remembers context across sessions
+- **Skills & workflows** — pre-built planning, code review, and ops tools
 
-**Step 2 — Copy and run these commands one at a time**
-
-- `[YOUR_FOLDER_NAME]` — what you want to name your local folder, no spaces (e.g. `alex-ops`)
-
-```bash
-git clone https://github.com/kwoekel/kwoekel-ops-template [YOUR_FOLDER_NAME]
-cd [YOUR_FOLDER_NAME]
-bash setup.sh
-python3 scripts/onboard.py --fresh
-```
-
-Each command does one thing:
-- `git clone` — downloads the template to your computer
-- `cd` — moves into the folder you just created
-- `bash setup.sh` — installs the tools this system uses
-- `python3 scripts/onboard.py --fresh` — runs a wizard that sets up your personal details
-
-The wizard will ask you questions. Just answer them — no coding required.
-
----
-
-## After Setup — Fill In Your Details
-
-Open the files below and replace the placeholder text with your real information. Each file has instructions inside it.
-
-| File | What to fill in |
-|---|---|
-| `CLAUDE.md` | Your name, focus areas, timezone, and email |
-| `context/me.md` | How you like to communicate, your working style |
-| `connections.md` | Any tools you use (Notion, Slack, etc.) |
-| `endpoints.md` | Any API IDs or webhook URLs you reference often |
-
-To open a file: in your Terminal, type `open CLAUDE.md` and it will open in a text editor.
-
----
-
-## Already Have a Repo You Want to Import?
-
-If you have an existing project folder you want Claude to learn from:
-
-```bash
-python3 scripts/onboard.py --import /path/to/your/repo
-```
-
-Or import directly from GitHub:
-
-```bash
-python3 scripts/onboard.py --import-github [GITHUB_USERNAME]/[REPO_NAME]
-```
-
-- `[GITHUB_USERNAME]` — the GitHub account that owns the repo (e.g. `acme-corp`)
-- `[REPO_NAME]` — the name of the repo (e.g. `my-project`)
-
-Claude will read the repo and pre-fill your context files automatically.
+You can always edit any of these files later if you need to change something.
 
 ---
 

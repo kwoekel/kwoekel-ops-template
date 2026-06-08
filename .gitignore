@@ -27,3 +27,6 @@ node_modules/
 venv/
 .pytest_cache/
 *.egg-info/
+
+# Archived scripts (kept for reference, not for use)
+scripts/_archive/
