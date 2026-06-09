@@ -1,13 +1,20 @@
-# [YOUR_NAME] Ops — Claude Entry Point
+# Personal Ops — Claude Entry Point
 
-**[YOUR_NAME] | [YOUR_FOCUS_AREAS]**
-**Timezone:** [TIMEZONE] | **Email:** [YOUR_EMAIL]
-**Tools:** [list your key tools here]
+> **Setup status:** If this file still contains `[PLACEHOLDER]` tokens, run `/onboard` to complete setup.
+> Once setup is done, this file is your permanent ops profile. Edit it directly anytime.
 
-**Focus areas:**
-1. [Focus area 1]
-2. [Focus area 2]
-3. [Focus area 3]
+---
+
+**Name:** [YOUR_FULL_NAME]
+**Email:** [YOUR_EMAIL_ADDRESS]
+**Timezone:** [YOUR_TIMEZONE — e.g. PST, EST, CET]
+**What I do:** [ONE_LINE_SUMMARY — e.g. "Freelance ops consultant + job seeker"]
+**Key tools:** [TOOLS_YOU_USE — e.g. Notion, Slack, GitHub, Linear]
+
+**Current focus:**
+1. [FOCUS_AREA_1 — e.g. Job search: senior ops roles at Series B startups]
+2. [FOCUS_AREA_2 — e.g. Client work: 2 active accounts]
+3. [FOCUS_AREA_3 — e.g. Building: personal automation stack]
 
 ---
 
@@ -15,57 +22,69 @@
 
 Run in order every session:
 
-1. Load `context/me.md` — always, every session (voice, comm style, working prefs).
-2. Identify the task area → load ONE entry from the routing table below.
-3. Stop. Do not load additional context files unless the task explicitly requires them.
+1. Load `context/me.md` — always, every session. This is voice, tone, communication style.
+2. Identify the task → load ONE entry from the routing table below.
+3. Stop. Do not load additional files unless the task explicitly requires them.
 
 ---
 
 ## Task Routing
 
-| Task | Load |
-|------|------|
-| Writing in [YOUR_NAME]'s voice (posts, emails, applications) | `context/me.md` (step 1, already loaded) |
-| [Project 1 description] | `projects/[project-1]/CLAUDE.md` |
-| [Project 2 description] | `projects/[project-2]/CLAUDE.md` |
-| [Project 3 description] | `projects/[project-3]/CLAUDE.md` |
-| Scheduled task work | `scheduled-tasks/<task-name>/` — load that task's file only |
-| Debugging integrations / checking what's connected | `connections.md` |
-| Look up an endpoint ID | `endpoints.md` |
-| Architecture decisions / why something was built | `decisions/log.md` |
-| Career focus / target roles | `context/goals.md` |
-| Employment status / availability | `context/work.md` |
-| People notes, project snapshots, or terms | `memory/MEMORY.md` → specific file |
-| Navigating the repo or finding a file | `MAP.md` |
+| If the task is... | Load this |
+|---|---|
+| Writing in my voice (posts, emails, applications) | `context/me.md` (already loaded in step 1) |
+| [PROJECT_1_NAME — e.g. Client: Acme account] | `projects/[project-1-folder]/CLAUDE.md` |
+| [PROJECT_2_NAME — e.g. Job search pipeline] | `projects/[project-2-folder]/CLAUDE.md` |
+| [PROJECT_3_NAME — e.g. Newsletter] | `projects/[project-3-folder]/CLAUDE.md` |
+| Running a scheduled task | `scheduled-tasks/<task-name>/` — that task's file only |
+| Debugging a broken integration | `connections.md` |
+| Looking up an endpoint or database ID | `endpoints.md` |
+| Career goals or target roles | `context/goals.md` |
+| My employment status or availability | `context/work.md` |
+| Why something was built a certain way | `decisions/log.md` |
+| People, project notes, or terminology | `memory/MEMORY.md` → then the specific file |
+| Finding a file or navigating the repo | `MAP.md` |
 
 ---
 
-## Before You Build Anything New
+## Before Building Anything New
 
 Run this check before creating any file, folder, or skill:
 
-1. **Check MAP.md** — does a home already exist for this?
-2. **Check skills/README.md** — does a skill for this already exist?
-3. **Run the 3-question test** (EXPANSIONS.md) before any new folder
+1. **Check `MAP.md`** — does a home already exist for this?
+2. **Check `skills/README.md`** — does a skill for this already exist?
+3. **Check `EXPANSIONS.md`** — run the 3-question test before any new folder
 4. **Log the decision** in `decisions/log.md` if it's architectural
 
-If you're adding a skill:
-- Check `skills/README.md` first
-- Run `python3 skills/sync.py --write` after registering in `~/.claude/registry.json`
-- Log in `decisions/log.md`
+If adding a skill:
+- Check `skills/README.md` first to avoid duplicates
+- Register in `~/.claude/registry.json` then run `python3 skills/sync.py --write`
+- Log the decision in `decisions/log.md`
 
-If you're modifying CLAUDE.md or MAP.md:
-- Read GUARDRAILS.md first
+If modifying `CLAUDE.md` or `MAP.md`:
+- Read `GUARDRAILS.md` first
 - Commit separately with prefix `structure:`
 
 ---
 
-## Self-Maintenance Schedule
+## Connections Quick-Reference
+
+Full details → `connections.md` | Endpoint IDs → `endpoints.md`
+
+| Task | Use |
+|---|---|
+| [TOOL_1 — e.g. Project management] | [HOW — e.g. Notion MCP] |
+| [TOOL_2 — e.g. Communication] | [HOW — e.g. Slack MCP] |
+| Fetch API secrets or tokens | `infisical` CLI — never from `.env` files |
+
+---
+
+## Self-Maintenance
 
 | Cadence | What runs | What it maintains |
 |---|---|---|
-| Every session | Session boot (`context/me.md`) | Voice and style consistency |
-| Every Friday | `weekly-ops-audit` | 4Cs health + repo drift detection + skills sync |
+| Every session | Session boot: `context/me.md` | Voice and style consistency |
+| Every Friday | `weekly-ops-audit` skill | Repo health + skills sync |
 | Quarterly | Review `context/goals.md` | Targets stay current |
 | Quarterly | Review CLAUDE.md focus areas | Projects and priorities stay accurate |
 | When a tool breaks | Update `connections.md` status | Integration registry stays honest |
@@ -74,31 +93,12 @@ If you're modifying CLAUDE.md or MAP.md:
 
 ## What NOT to Load
 
-- `_tools/graphify/GRAPH_REPORT.md` — 12MB+, will explode context. Use graphify CLI.
-- All `context/` files at once — always selective by task.
-- `skills/` SKILL.md files directly — invoke via `Skill("name")`.
-- `memory/` wholesale — use `memory/MEMORY.md` index first, then the specific file.
+- `_tools/graphify/GRAPH_REPORT.md` — 12MB+, destroys context. Query via `graphify` CLI only.
+- All `context/` files at once — selective loading is the whole point.
+- Skill files directly — invoke via `Skill("name")`, never read `SKILL.md` files.
+- `memory/` wholesale — use `MEMORY.md` index first, then the specific file.
 - `scheduled-tasks/` wholesale — load one task directory at a time.
-
----
-
-## Skills Registry
-
-> Invoke via `Skill("skill-name")` — never read SKILL.md files directly.
-> Full categorized table → `skills/README.md`
-
----
-
-## Connections Quick-Reference
-
-> Full details, auth methods, and status → `connections.md`
-> Endpoint IDs → `endpoints.md`
-
-| Task | Use |
-|---|---|
-| [Your tool 1] | [How to invoke it] |
-| [Your tool 2] | [How to invoke it] |
-| Secrets | `infisical` CLI — single source of truth for all API keys |
+- Any `_archive/` folder — raw ingested content, never useful in a normal session.
 
 ---
 
@@ -106,9 +106,9 @@ If you're modifying CLAUDE.md or MAP.md:
 
 | Don't | Because |
 |---|---|
-| Read `_tools/graphify/GRAPH_REPORT.md` | 12MB+, destroys context |
+| Read `_tools/graphify/GRAPH_REPORT.md` | 12MB+, destroys context window |
 | Load all `context/` files at once | Selective loading is the whole point |
-| Read skill files directly | `Skill()` loads automatically |
-| Load all of `scheduled-tasks/` | Many dirs × file reads = massive waste |
-| Create `notes/`, `misc/`, `tmp/` | Graveyards. See `EXPANSIONS.md`. |
-| Add a second root CLAUDE.md | One canonical entry point only |
+| Read skill files directly | `Skill()` loads them automatically |
+| Store secrets in `.env` files | Infisical is the single source of truth |
+| Create `notes/`, `misc/`, or `tmp/` folders | They become graveyards — see `EXPANSIONS.md` |
+| Add a second `CLAUDE.md` at the repo root | One canonical entry point only |
