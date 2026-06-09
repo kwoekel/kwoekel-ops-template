@@ -110,7 +110,6 @@ _templates/
 scripts/
 ├── setup.sh            ← One-command installer (run once after clone)
 ├── ingest.py           ← Ingestion engine — scaffold/inventory/verify (used by /ingest-project)
-├── onboard.py          ← Onboarding wizard (fresh start or import existing repo)
 ├── merge-settings.py   ← Merges hooks + safety rules into ~/.claude/settings.json
 ├── install-launchd.py  ← Sets up weekly-ops-audit launchd agent (Mac)
 ├── auto-sync.sh        ← Git auto-sync utility

@@ -56,10 +56,14 @@ Run this check before creating any file, folder, or skill:
 3. **Check `EXPANSIONS.md`** — run the 3-question test before any new folder
 4. **Log the decision** in `decisions/log.md` if it's architectural
 
-If adding a skill:
-- Check `skills/README.md` first to avoid duplicates
-- Register in `~/.claude/registry.json` then run `python3 skills/sync.py --write`
+If adding an in-repo skill (most common):
+- Create it at `.claude/skills/<name>/SKILL.md` — Claude Code auto-discovers it
+- Check `skills/README.md` first to avoid duplicating something that already exists
+- Run `python3 skills/sync.py --write` to update the human-readable index
 - Log the decision in `decisions/log.md`
+
+If adding a global skill (external, shared across all your repos):
+- Register in `~/.claude/registry.json` then run `python3 skills/sync.py --write`
 
 If modifying `CLAUDE.md` or `MAP.md`:
 - Read `GUARDRAILS.md` first

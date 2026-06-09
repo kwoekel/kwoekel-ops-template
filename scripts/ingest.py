@@ -143,7 +143,7 @@ def inventory(name: str, source: str) -> None:
 
 
 # ── verify ──────────────────────────────────────────────────────────────────
-_ROW_RE = re.compile(r"^\|\s*(\d{3})\s*\|.*?\|.*?\|\s*([a-zA-Z]+)\s*\|(.*)\|\s*$")
+_ROW_RE = re.compile(r"^\|\s*([A-Za-z0-9]+)\s*\|.*?\|.*?\|\s*([a-zA-Z]+)\s*\|(.*)\|\s*$")
 
 
 def _parse_ledger(ledger: Path):

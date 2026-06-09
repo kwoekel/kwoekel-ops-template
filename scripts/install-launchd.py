@@ -53,6 +53,7 @@ def main():
     print(f"  ✅ Weekly ops audit scheduled: {LABEL}")
     print(f"     Runs: every Friday at 1pm")
     print(f"     Plist: {PLIST_PATH}")
+    print(f"     Note: if you rename or move this repo, re-run this script to update the path.")
 
 if __name__ == "__main__":
     main()

@@ -50,8 +50,21 @@ done
 # ── 3. Copy hook scripts to ~/.claude/hooks/ ──────────────────────────────────
 echo "→ Installing Claude Code hooks..."
 mkdir -p "$HOME/.claude/hooks"
-# Overwrite so re-running setup picks up updated hook scripts
-cp -f "$REPO_DIR/hooks/"* "$HOME/.claude/hooks/" 2>/dev/null || true
+# Check for existing hooks that didn't come from this template before overwriting
+EXISTING=$(ls "$HOME/.claude/hooks/" 2>/dev/null | wc -l | tr -d ' ')
+TEMPLATE_HOOKS=$(ls "$REPO_DIR/hooks/" 2>/dev/null | wc -l | tr -d ' ')
+if [[ "$EXISTING" -gt 0 ]]; then
+  echo "  ⚠️  ~/.claude/hooks/ already has $EXISTING file(s). This will overwrite any with matching names."
+  read -r -p "  Continue? [y/N] " _confirm
+  if [[ "$_confirm" != "y" && "$_confirm" != "Y" ]]; then
+    echo "  Skipped hook installation. Copy manually from $REPO_DIR/hooks/ if needed."
+    SKIP_HOOKS=1
+  fi
+fi
+if [[ -z "$SKIP_HOOKS" ]]; then
+  cp -f "$REPO_DIR/hooks/"* "$HOME/.claude/hooks/" 2>/dev/null || true
+  echo "  ✅ Hooks copied to ~/.claude/hooks/ ($TEMPLATE_HOOKS files)"
+fi
 # Restore real $HOME path in any hooks that use the __HOME_DIR__ placeholder
 find "$HOME/.claude/hooks" -type f -exec   sed -i "" "s|__HOME_DIR__|$HOME|g" {} \; 2>/dev/null ||   find "$HOME/.claude/hooks" -type f -exec     sed -i "s|__HOME_DIR__|$HOME|g" {} \; 2>/dev/null || true
 echo "  ✅ Hooks copied to ~/.claude/hooks/"
