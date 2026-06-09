@@ -17,4 +17,4 @@
 |---|---|
 | Skills | `Skill("skill-name")` — never read SKILL.md directly |
 | Graphify | `graphify query "question"` — never read GRAPH_REPORT.md |
-| Weekly audit | launchd: `launchctl start com.[YOUR_USERNAME].weekly-ops-audit` |
+| Weekly audit | Run manually: `/weekly-ops-audit` in Claude Code |

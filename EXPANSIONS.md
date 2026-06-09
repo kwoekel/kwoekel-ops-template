@@ -94,3 +94,47 @@ This repo ships deliberately sized. Add only what's needed, when it's needed.
 Three questions. Two yeses = add. One yes = wait.
 If you add it, log the decision in `decisions/log.md`.
 If you're not sure, read `GUARDRAILS.md` first.
+
+---
+
+## Optional Expansions (removed from simplified template)
+
+These components exist on the `master` branch of this repo and can be added back
+at any time. Each entry describes what it does, when to add it, and where it goes.
+
+### `agents/` — Sub-agent configs (CEO, CTO, custom roles)
+Add when you want a specialized AI lens to handle complex multi-step tasks that
+are too long for one context window. Create `agents/<role>/AGENT.md` using the
+patterns in `master`. CLAUDE.md routes here via the task routing table — add a
+row for "delegating to [role]".
+
+### `token-dashboard/` — Token usage analytics
+Add when you want to track Claude token usage across sessions. It's a git
+submodule. Run:
+```bash
+git submodule add https://github.com/nateherkai/token-dashboard.git token-dashboard
+git submodule update --init
+```
+Open `token-dashboard/dashboard.html` in a browser to view analytics.
+
+### Launchd scheduler — Automated weekly ops audit (Mac)
+Add when you want the weekly ops audit to run automatically without manual
+invocation. The script lives at `master:scripts/install-launchd.py`. It creates
+a launchd plist that triggers the audit every Friday. Note: the plist encodes
+your repo path — re-run if you move or rename the repo.
+
+### Plugin stack — Full Claude Code plugin suite
+Add when you want the superpowers, feature-dev, code-review, and other plugins
+installed globally. The full list and install commands are in `master:scripts/setup.sh`
+(sections 1–2). Requires the `claude` CLI to be installed and authenticated.
+
+### `/setup` skill — Local tooling installer
+Add when you want a one-command `/setup` skill that wraps plugin installation
+and launchd setup. The full skill is at `master:.claude/skills/setup/SKILL.md`.
+Only useful after adding the plugin stack and launchd scheduler above.
+
+### `/ingest-project` skill — Import an existing repo into the framework
+Add when you need to reorganize a chaotic existing repo into this framework.
+The skill is at `master:.claude/skills/ingest-project/SKILL.md`; the engine
+script is at `master:scripts/ingest.py`. It scaffolds, inventories, dedupes,
+and proves nothing was lost via an accounting ledger.

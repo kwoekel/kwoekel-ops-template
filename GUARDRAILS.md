@@ -17,8 +17,8 @@ Enforced by `.claude/settings.json` PreToolUse hooks. These fire before the acti
 
 **Approved root-level directories** (any new dir outside this list triggers a warning):
 `context`, `memory`, `decisions`, `projects`, `scheduled-tasks`, `skills`, `scripts`,
-`references`, `docs`, `audits`, `agents`, `_templates`, `_tools`, `.claude`, `.github`,
-`.planning`, `.understand-anything`, `.vscode`, `hooks`, `token-dashboard`
+`references`, `docs`, `audits`, `_templates`, `_tools`, `.claude`, `.github`,
+`.planning`, `.understand-anything`, `.vscode`, `hooks`
 
 ---
 

@@ -33,9 +33,9 @@ Run in order every session:
 | If the task is... | Load this |
 |---|---|
 | Writing in my voice (posts, emails, applications) | `context/me.md` (already loaded in step 1) |
-| [PROJECT_1_NAME — e.g. Client: Acme account] | `projects/[project-1-folder]/CLAUDE.md` |
-| [PROJECT_2_NAME — e.g. Job search pipeline] | `projects/[project-2-folder]/CLAUDE.md` |
-| [PROJECT_3_NAME — e.g. Newsletter] | `projects/[project-3-folder]/CLAUDE.md` |
+| *Your project 1 — replace with e.g. "Client: Acme"* | `projects/<your-folder>/CLAUDE.md` |
+| *Your project 2 — replace with e.g. "Job search"* | `projects/<your-folder>/CLAUDE.md` |
+| *Your project 3 — replace with e.g. "Newsletter"* | `projects/<your-folder>/CLAUDE.md` |
 | Running a scheduled task | `scheduled-tasks/<task-name>/` — that task's file only |
 | Debugging a broken integration | `connections.md` |
 | Looking up an endpoint or database ID | `endpoints.md` |

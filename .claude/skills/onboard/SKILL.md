@@ -54,7 +54,7 @@ confident and asking the user only for the rest. Files that contain placeholders
 - `endpoints.md` — GitHub username/repo, last-verified date
 - `MAP.md` — name, focus areas, last-updated date (loaded every session via routing)
 - `memory/MEMORY.md`, `memory/overview.md`, `memory/glossary.md`
-- `decisions/log.md`, and any `agents/*/AGENT.md`
+- `decisions/log.md`
 - `scheduled-tasks/example-task/README.md` — launchd label username
 
 Do not fill placeholders inside instructional/example files — leave
@@ -85,7 +85,7 @@ After writing, run a final sweep so nothing personal is left blank. From the rep
 root:
 
 ```bash
-grep -rnE '\[YOUR_[A-Z_]*\]|\[TIMEZONE\]|\[DATE\]' . \
+grep -rnE '\[YOUR_[A-Za-z_]*\]|\[TIMEZONE\]|\[DATE\]|\[ONE_LINE_SUMMARY[^\]]*\]|\[TOOLS_YOU_USE[^\]]*\]|\[FOCUS_AREA_[0-9][^\]]*\]' . \
   --include='*.md' \
   | grep -vE '\.git/|_archive/|_templates/|EXPANSIONS\.md|GUARDRAILS\.md|REVIEW\.md|\.claude/skills/'
 ```
@@ -112,9 +112,8 @@ Tell the user:
 1. **Review `CLAUDE.md`** and confirm everything reads correctly
 2. **Add their voice** to longer sections like `context/me.md` that need real prose
 3. **Connect tools** in `connections.md` if they use Notion, Slack, etc.
-4. **(Optional, Claude Code only)** run **`/setup`** to install local tooling —
-   graphify, plugins, hooks, and the weekly ops audit. Web users can skip this;
-   all core features work without it.
+4. **(Optional, Claude Code only)** run `bash scripts/setup.sh` to copy Claude Code
+   hooks and wire up settings. Web users can skip this; all core features work without it.
 
 ## Re-running
 

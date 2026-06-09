@@ -22,9 +22,8 @@ Stop. Do not load more.
 | I need to... | Load this | Notes |
 |---|---|---|
 | Write in [YOUR_NAME]'s voice | `context/me.md` | Already loaded in boot |
-| [Project 1] | `projects/[project-1]/CLAUDE.md` | |
-| [Project 2] | `projects/[project-2]/CLAUDE.md` | |
-| Bring an existing repo into the framework | Run `/ingest-project` | Organizes, dedupes, prunes; proves nothing lost |
+| *Your project 1 — replace with e.g. "Client: Acme"* | `projects/<your-folder>/CLAUDE.md` | |
+| *Your project 2 — replace with e.g. "Job search"* | `projects/<your-folder>/CLAUDE.md` | |
 | Start a new project from scratch | Run `/new-from-template` | Defaults to the generic skeleton |
 | Run a scheduled task | `scheduled-tasks/<name>/` — that task's file only | One at a time |
 | Debug an integration | `connections.md` | |
@@ -85,22 +84,18 @@ scheduled-tasks/
 └── example-task/       ← Template stub — replace with real tasks
 ```
 
-### Skills & Agents
+### Skills
 ```
 skills/
 ├── README.md           ← Skills registry — invoke via Skill("name")
 ├── sync.py             ← Auto-syncs ~/.claude/registry.json → README.md
 └── new-from-template/
-
-agents/
-├── ceo/AGENT.md        ← Strategic lens
-└── cto/AGENT.md        ← Technical lens
 ```
 
 ### Templates (Reusable Shapes)
 ```
 _templates/
-├── project-skeleton/   ← DEFAULT project shape (generic, best-practice) — copied by /new-from-template & /ingest-project
+├── project-skeleton/   ← DEFAULT project shape (generic, best-practice) — copied by /new-from-template
 ├── _examples/          ← Opt-in domain blueprints (lead-gen framework, four-phase roadmap)
 └── new-from-template.py ← Fills [KEY] placeholders for the opt-in domain templates
 ```
@@ -108,10 +103,8 @@ _templates/
 ### Scripts & Utilities
 ```
 scripts/
-├── setup.sh            ← One-command installer (run once after clone)
-├── ingest.py           ← Ingestion engine — scaffold/inventory/verify (used by /ingest-project)
+├── setup.sh            ← Optional: copies hooks + merges settings (run after /onboard)
 ├── merge-settings.py   ← Merges hooks + safety rules into ~/.claude/settings.json
-├── install-launchd.py  ← Sets up weekly-ops-audit launchd agent (Mac)
 ├── auto-sync.sh        ← Git auto-sync utility
 └── notion-mcp.sh       ← Starts the Notion MCP server
 ```
@@ -135,5 +128,4 @@ hooks/                  ← Claude Code hook scripts — copied to ~/.claude/hoo
 ### Config
 ```
 .claude/settings.json   ← Claude Code tool config + PreToolUse hooks (project-level)
-token-dashboard/        ← Git submodule: token analytics (open dashboard.html in browser)
 ```

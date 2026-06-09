@@ -1,9 +1,9 @@
 ---
 name: weekly-ops-audit
-description: Weekly automated audit of the ops architect agent harness — runs every Sunday evening alongside weekly-pipeline-review
+description: Weekly audit of the ops repo and Claude Code agent harness — run manually every Friday or invoke via a scheduled task
 ---
 
-You are auditing [YOUR_NAME]'s Claude Code agent harness for the past week. Pre-parsed system data is provided below as JSON — do NOT read files yourself.
+You are auditing this Claude Code agent harness for the past week. Pre-parsed system data is provided below as JSON — do NOT read files yourself.
 
 ## Input Data
 
@@ -73,7 +73,7 @@ Cadence: OK / [what's off-schedule]
 
 ## Step 3 — Write the gap report
 
-Create a Notion page under "My Job Search" parent (page ID: 2ae58ea23b8e81b0a4bbf9a99ea6a538) titled "Weekly Ops Audit — [date]" with the following sections:
+Create a Notion page under your audit parent page (page ID: `[YOUR_NOTION_AUDIT_PARENT_ID]` — set this in `endpoints.md`) titled "Weekly Ops Audit — [date]" with the following sections:
 
 ### System Health
 - Hooks: OK / Issues found
