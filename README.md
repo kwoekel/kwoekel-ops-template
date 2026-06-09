@@ -134,6 +134,25 @@ That's it. The repo is now personalized and ready.
 
 ---
 
+## Staying in Sync with the Template
+
+If this repo is cloned from an upstream template and you want to pull in future improvements (new skills, structural fixes, etc.):
+
+**One-time setup** — run this once after cloning:
+```bash
+git remote add upstream https://github.com/TEMPLATE-OWNER/kwoekel-ops-template.git
+```
+
+**To pull in updates:**
+```bash
+git fetch upstream
+git merge upstream/master --allow-unrelated-histories
+```
+
+Conflicts will be rare — template updates touch structural files (`skills/`, `_templates/`, `hooks/`) while your personal files live in `context/`, `projects/`, and `connections.md`. Resolve any conflicts in favor of whichever version has your actual content, then commit.
+
+---
+
 ## Maintaining It
 
 | When | Do this |
