@@ -48,6 +48,33 @@ for f in "${EXISTING_FILES[@]}"; do
   fi
 done
 
+# ── 1b. Write ingest manifest (immediately after scan, before any files are copied) ──
+echo "→ Writing ingest manifest..."
+MANIFEST="$DEST/_inbox/INGEST_MANIFEST.md"
+mkdir -p "$DEST/_inbox"
+
+{
+  echo "# Ingest Manifest"
+  echo "Generated: $(date '+%Y-%m-%d %H:%M:%S')"
+  echo ""
+  for f in "${TEXT_FILES[@]}"; do
+    rel="${f#$DEST/}"
+    if [[ -f "$f" ]]; then
+      size_bytes=$(wc -c < "$f" 2>/dev/null || echo 0)
+      if (( size_bytes >= 1048576 )); then
+        size_str="$(echo "scale=1; $size_bytes / 1048576" | bc) MB"
+      elif (( size_bytes >= 1024 )); then
+        size_str="$(echo "scale=1; $size_bytes / 1024" | bc) KB"
+      else
+        size_str="${size_bytes} B"
+      fi
+      echo "- $rel ($size_str)"
+    fi
+  done
+} > "$MANIFEST"
+
+echo "  + $MANIFEST"
+
 # ── 2. Download template ───────────────────────────────────────────────────────
 echo "→ Downloading ops template..."
 rm -rf "$TEMPLATE_DIR"
@@ -114,36 +141,6 @@ for stub in context/me.md context/goals.md context/work.md memory/MEMORY.md; do
     copy_if_missing "$TEMPLATE_DIR/$stub" "$DEST/$stub"
   fi
 done
-
-# ── 5. Write ingest manifest ───────────────────────────────────────────────────
-echo "→ Writing ingest manifest..."
-MANIFEST="$DEST/_inbox/INGEST_MANIFEST.md"
-mkdir -p "$DEST/_inbox"
-
-{
-  echo "# Ingest Manifest"
-  echo "Generated: $(date '+%Y-%m-%d %H:%M:%S')"
-  echo ""
-  echo "## Files found before install"
-  echo ""
-  for f in "${TEXT_FILES[@]}"; do
-    rel="${f#$DEST/}"
-    # Get file size in human-friendly format
-    if [[ -f "$f" ]]; then
-      size_bytes=$(wc -c < "$f" 2>/dev/null || echo 0)
-      if (( size_bytes >= 1048576 )); then
-        size_str="$(echo "scale=1; $size_bytes / 1048576" | bc) MB"
-      elif (( size_bytes >= 1024 )); then
-        size_str="$(echo "scale=1; $size_bytes / 1024" | bc) KB"
-      else
-        size_str="${size_bytes} B"
-      fi
-      echo "- $rel ($size_str)"
-    fi
-  done
-} > "$MANIFEST"
-
-echo "  + $MANIFEST"
 
 # ── 6. Wire up Claude Code (non-interactive) ───────────────────────────────────
 echo "→ Wiring up Claude Code hooks..."
