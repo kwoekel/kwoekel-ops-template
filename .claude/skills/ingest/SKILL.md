@@ -1,7 +1,6 @@
 ---
 name: ingest
 description: Organizes existing repo content into the ops framework structure. Fires automatically when _inbox/INGEST_MANIFEST.md is detected. Reads, deduplicates, and synthesizes source files into the correct framework locations — nothing deleted, originals archived.
-disable-model-invocation: true
 ---
 
 # Ingest Skill

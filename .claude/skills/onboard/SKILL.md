@@ -1,7 +1,6 @@
 ---
 name: onboard
 description: Interactive conversational wizard that personalizes this ops template for a new owner. Fills [PLACEHOLDER] values across the repo and commits the result. Use when someone has just cloned the template and wants to set it up.
-disable-model-invocation: true
 ---
 
 # Onboarding Wizard
