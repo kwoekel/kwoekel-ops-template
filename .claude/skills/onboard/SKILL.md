@@ -21,6 +21,21 @@ This skill only fills `[PLACEHOLDER]` tokens. It never deletes existing content.
 
 ## The flow
 
+### Pre-check — ingest mode detection (runs before Step 1)
+
+Before presenting any mode options, check whether `_inbox/INGEST_MANIFEST.md`
+exists in the current repo root.
+
+If it exists → do not run this wizard. Instead, invoke the `/ingest` skill
+and tell the user:
+
+> "I found an ingest manifest from the installer. Switching to ingest mode to
+> organize your existing files into the framework structure."
+
+If it does not exist → continue to Step 1 below.
+
+---
+
 ### Step 1 — Pick a mode
 
 Ask the user which one fits (use AskUserQuestion):
