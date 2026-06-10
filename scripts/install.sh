@@ -116,7 +116,7 @@ for fname in CLAUDE.md MAP.md GUARDRAILS.md EXPANSIONS.md connections.md endpoin
 done
 
 # Skills
-for skill in onboard new-from-template; do
+for skill in onboard new-from-template ingest; do
   skill_src="$TEMPLATE_DIR/.claude/skills/$skill/SKILL.md"
   skill_dst="$DEST/.claude/skills/$skill/SKILL.md"
   if [[ -f "$skill_src" ]]; then
