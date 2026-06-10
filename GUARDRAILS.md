@@ -17,16 +17,16 @@ Enforced by `.claude/settings.json` PreToolUse hooks. These fire before the acti
 
 **Approved root-level directories** (any new dir outside this list triggers a warning):
 `context`, `memory`, `decisions`, `projects`, `scheduled-tasks`, `skills`, `scripts`,
-`references`, `docs`, `audits`, `agents`, `_templates`, `_tools`, `.claude`, `.github`,
-`.planning`, `.understand-anything`, `.vscode`
+`references`, `docs`, `audits`, `_templates`, `_tools`, `.claude`, `.github`,
+`.planning`, `.understand-anything`, `.vscode`, `hooks`
 
 ---
 
-## Layer 2 — Weekly Automated Scan (Sunday)
+## Layer 2 — Weekly Automated Scan (Friday)
 
-Run by `weekly-ops-audit` every Sunday. Surfaces drift in the Notion audit report.
+Run by `weekly-ops-audit` every Friday. Surfaces drift in the Notion audit report.
 
-**Repo Health checks run every Sunday:**
+**Repo Health checks run every Friday:**
 
 1. **New directory detector** — compares `ls -d */` against the approved list above. Flags anything new.
 2. **Skills sync drift** — compares `~/.claude/registry.json` count against `skills/README.md` table rows. Flags mismatches.
@@ -95,7 +95,7 @@ Every commit message uses a prefix. This makes the git log a readable ops record
 
 ## What the Weekly Audit Report Looks Like
 
-Every Sunday, the ops audit Notion page includes a **Repo Health** section:
+Every Friday, the ops audit Notion page includes a **Repo Health** section:
 
 ```
 ## Repo Health

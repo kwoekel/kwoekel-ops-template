@@ -140,7 +140,7 @@ If this repo is cloned from an upstream template and you want to pull in future 
 
 **One-time setup** — run this once after cloning:
 ```bash
-git remote add upstream https://github.com/TEMPLATE-OWNER/kwoekel-ops-template.git
+git remote add upstream https://github.com/kwoekel/kwoekel-ops-template.git
 ```
 
 **To pull in updates:**

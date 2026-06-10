@@ -33,9 +33,9 @@ Run in order every session:
 | If the task is... | Load this |
 |---|---|
 | Writing in my voice (posts, emails, applications) | `context/me.md` (already loaded in step 1) |
-| [PROJECT_1_NAME — e.g. Client: Acme account] | `projects/[project-1-folder]/CLAUDE.md` |
-| [PROJECT_2_NAME — e.g. Job search pipeline] | `projects/[project-2-folder]/CLAUDE.md` |
-| [PROJECT_3_NAME — e.g. Newsletter] | `projects/[project-3-folder]/CLAUDE.md` |
+| *Your project 1 — replace with e.g. "Client: Acme"* | `projects/<your-folder>/CLAUDE.md` |
+| *Your project 2 — replace with e.g. "Job search"* | `projects/<your-folder>/CLAUDE.md` |
+| *Your project 3 — replace with e.g. "Newsletter"* | `projects/<your-folder>/CLAUDE.md` |
 | Running a scheduled task | `scheduled-tasks/<task-name>/` — that task's file only |
 | Debugging a broken integration | `connections.md` |
 | Looking up an endpoint or database ID | `endpoints.md` |
@@ -56,10 +56,14 @@ Run this check before creating any file, folder, or skill:
 3. **Check `EXPANSIONS.md`** — run the 3-question test before any new folder
 4. **Log the decision** in `decisions/log.md` if it's architectural
 
-If adding a skill:
-- Check `skills/README.md` first to avoid duplicates
-- Register in `~/.claude/registry.json` then run `python3 skills/sync.py --write`
+If adding an in-repo skill (most common):
+- Create it at `.claude/skills/<name>/SKILL.md` — Claude Code auto-discovers it
+- Check `skills/README.md` first to avoid duplicating something that already exists
+- Run `python3 skills/sync.py --write` to update the human-readable index
 - Log the decision in `decisions/log.md`
+
+If adding a global skill (external, shared across all your repos):
+- Register in `~/.claude/registry.json` then run `python3 skills/sync.py --write`
 
 If modifying `CLAUDE.md` or `MAP.md`:
 - Read `GUARDRAILS.md` first

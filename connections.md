@@ -4,7 +4,7 @@ Live table of every active integration. Update Status when something breaks or a
 
 | Domain | Tool / Service | How Connected | Auth Method | Used By | Status |
 |--------|---------------|---------------|-------------|---------|--------|
-| **Productivity** | [Tool] | [MCP / CLI / Plugin] | [Token/OAuth via X] | [task-name] | ✅ Active |
+| *(add your tools here — e.g. Notion, Slack, Linear)* | | | | | |
 | **Dev** | GitHub | `gh` CLI (primary) | OAuth / token | Code context, PRs | ✅ Active |
 | **Secrets** | Infisical | CLI + env injection | Service token | All scheduled tasks | ✅ Active |
 
@@ -16,7 +16,7 @@ Live table of every active integration. Update Status when something breaks or a
 
 | Task | Use this tool/MCP |
 |---|---|
-| [Task description] | [Tool / MCP name] |
+| *(add task → tool mappings as you wire things in)* | |
 | Fetch API secrets / tokens | `infisical` CLI — never from .env |
 
 ---
