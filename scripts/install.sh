@@ -24,7 +24,10 @@ echo "→ Scanning existing files..."
 BINARY_EXTS="png jpg jpeg gif ico svg mp4 mp3 zip tar gz pdf woff woff2 ttf eot bin exe dmg"
 
 # Collect files into array, excluding .git, node_modules, temp dir, and binaries
-mapfile -t EXISTING_FILES < <(
+EXISTING_FILES=()
+while IFS= read -r f; do
+  EXISTING_FILES+=("$f")
+done < <(
   find "$DEST" -type f \
     ! -path "$DEST/.git/*" \
     ! -path "$DEST/node_modules/*" \
@@ -38,7 +41,8 @@ for f in "${EXISTING_FILES[@]}"; do
   ext="${f##*.}"
   is_binary=0
   for bext in $BINARY_EXTS; do
-    if [[ "${ext,,}" == "$bext" ]]; then
+    ext_lower="$(echo "$ext" | tr '[:upper:]' '[:lower:]')"
+    if [[ "$ext_lower" == "$bext" ]]; then
       is_binary=1
       break
     fi
@@ -49,36 +53,38 @@ for f in "${EXISTING_FILES[@]}"; do
 done
 
 # ── 1b. Write ingest manifest (immediately after scan, before any files are copied) ──
-echo "→ Writing ingest manifest..."
 MANIFEST="$DEST/_inbox/INGEST_MANIFEST.md"
 mkdir -p "$DEST/_inbox"
 
-{
-  echo "# Ingest Manifest"
-  echo "Generated: $(date '+%Y-%m-%d %H:%M:%S')"
-  echo ""
-  for f in "${TEXT_FILES[@]}"; do
-    rel="${f#$DEST/}"
-    if [[ -f "$f" ]]; then
-      size_bytes=$(wc -c < "$f" 2>/dev/null || echo 0)
-      if (( size_bytes >= 1048576 )); then
-        size_str="$(echo "scale=1; $size_bytes / 1048576" | bc) MB"
-      elif (( size_bytes >= 1024 )); then
-        size_str="$(echo "scale=1; $size_bytes / 1024" | bc) KB"
-      else
-        size_str="${size_bytes} B"
+if [[ ! -f "$MANIFEST" ]]; then
+  echo "→ Writing ingest manifest..."
+  prefix="$DEST/"
+  {
+    echo "# Ingest Manifest"
+    echo "Generated: $(date '+%Y-%m-%d %H:%M:%S')"
+    echo ""
+    for f in "${TEXT_FILES[@]}"; do
+      rel="${f#$prefix}"
+      if [[ -f "$f" ]]; then
+        size_bytes=$(wc -c < "$f" 2>/dev/null || echo 0)
+        size_str=$(awk "BEGIN {
+          if ($size_bytes >= 1048576) printf \"%.1f MB\", $size_bytes/1048576
+          else if ($size_bytes >= 1024) printf \"%.1f KB\", $size_bytes/1024
+          else printf \"%d B\", $size_bytes
+        }")
+        echo "- $rel ($size_str)"
       fi
-      echo "- $rel ($size_str)"
-    fi
-  done
-} > "$MANIFEST"
-
-echo "  + $MANIFEST"
+    done
+  } > "$MANIFEST"
+  echo "  + $MANIFEST"
+else
+  echo "→ Ingest manifest already exists, skipping (preserving original pre-install scan)"
+fi
 
 # ── 2. Download template ───────────────────────────────────────────────────────
 echo "→ Downloading ops template..."
 rm -rf "$TEMPLATE_DIR"
-if ! git clone --depth 1 --branch "$TEMPLATE_BRANCH" "$TEMPLATE_REPO" "$TEMPLATE_DIR" 2>&1; then
+if ! git clone --depth 1 --branch "$TEMPLATE_BRANCH" "$TEMPLATE_REPO" "$TEMPLATE_DIR"; then
   echo "ERROR: Failed to download template. Check your internet connection."
   exit 1
 fi
