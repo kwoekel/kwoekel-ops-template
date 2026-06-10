@@ -19,7 +19,24 @@ Can also be invoked manually with `/ingest`.
 
 ### Phase 1 — Read everything
 
+**Empty manifest guard:** Before reading any files, check whether the manifest
+contains any file paths. If the manifest is empty or contains no readable file
+paths, stop immediately and tell the user:
+
+> "The ingest manifest is empty — there were no pre-existing files to organize.
+> Your framework structure is already set up. Run /onboard to fill in your
+> personal details."
+
+Do not proceed through the remaining phases if the manifest is empty.
+
+---
+
 Read every file listed in `_inbox/INGEST_MANIFEST.md` in full.
+
+**Missing file handling:** If a listed file cannot be read (deleted, moved, or
+permission error), log it as missing: "Could not read: [path] — skipping."
+Continue reading the remaining files. Collect all missing paths and include them
+in the Phase 2 cluster report so the user is aware of what was skipped.
 
 Do NOT make routing decisions yet. Build a complete picture of:
 - What files exist and what they contain
@@ -82,6 +99,15 @@ Rules:
 - **Gaps:** if critical framework fields have no source content, ask the user
   to fill them directly rather than leaving placeholders
 
+**Existing content conflict check:** Before writing to any framework file that
+already contains non-placeholder content, check whether the synthesized content
+contradicts what is already there. If it does, surface the conflict to the user:
+
+> "I found a conflict in [filename]: existing content says X, new content says Y.
+> Which should I keep?"
+
+Resolve all conflicts before writing.
+
 Before executing any writes, show the user a confirmation summary:
 
 > "From X source files I've synthesized these Y framework files — [list with
@@ -95,10 +121,20 @@ User must approve before any files are written.
 
 After user confirms:
 
-1. **Archive source files** — move all original files from `_inbox/` to
-   `_archive/` preserving their original path structure (e.g.
-   `_inbox/notes/context.md` → `_archive/inbox/notes/context.md`).
-   Nothing is deleted — everything is recoverable.
+**Commit gate:** Only proceed to steps 1–5 below after ALL of the following are
+confirmed complete: (1) every source file has been moved to `_archive/`,
+(2) CLAUDE.md placeholders are filled, (3) `_inbox/INGEST_MANIFEST.md` has been
+deleted, (4) the placeholder sweep returned clean. If any step failed or
+produced errors, stop and report to the user before committing.
+
+1. **Archive source files** — first, create `_archive/inbox/` and any
+   subdirectories needed to mirror the source paths (e.g. if moving
+   `_inbox/notes/context.md`, ensure `_archive/inbox/notes/` exists before
+   the move — if the destination directory doesn't exist, the move will fail).
+   Then move all original files from `_inbox/` to `_archive/` preserving their
+   original path structure (e.g. `_inbox/notes/context.md` →
+   `_archive/inbox/notes/context.md`). Nothing is deleted — everything is
+   recoverable.
 
 2. **Fill CLAUDE.md placeholders** — use context learned during ingest to
    fill `[PLACEHOLDER]` tokens in `CLAUDE.md`: name, email, timezone, key

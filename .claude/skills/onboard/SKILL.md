@@ -26,11 +26,18 @@ This skill only fills `[PLACEHOLDER]` tokens. It never deletes existing content.
 Before presenting any mode options, check whether `_inbox/INGEST_MANIFEST.md`
 exists in the current repo root.
 
-If it exists → do not run this wizard. Instead, invoke the `/ingest` skill
-and tell the user:
+If it exists → do not run this wizard. Tell the user:
 
-> "I found an ingest manifest from the installer. Switching to ingest mode to
-> organize your existing files into the framework structure."
+> "I found an ingest manifest. Running ingest mode now."
+
+Then proceed to execute the ingest flow directly — follow the phases documented
+in `.claude/skills/ingest/SKILL.md` starting at Phase 1. Do not continue the
+onboard wizard.
+
+If for any reason you cannot execute the ingest flow inline, tell the user:
+
+> "Type `/ingest` to continue — your existing files are staged and ready to be
+> organized into the framework."
 
 If it does not exist → continue to Step 1 below.
 
